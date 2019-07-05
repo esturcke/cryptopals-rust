@@ -1,12 +1,9 @@
-
+use std::cmp;
 extern crate base64;
 extern crate hex;
 
 pub fn from_hex(encoded: &str) -> Vec<u8> {
-  match hex::decode(encoded) {
-    Ok(bytes) => bytes,
-    _ => panic!(),
-  }
+  hex::decode(encoded).expect("Failed to decode hex string")
 }
 
 pub fn to_hex(bytes: &Vec<u8>) -> String {
@@ -14,14 +11,20 @@ pub fn to_hex(bytes: &Vec<u8>) -> String {
 }
 
 pub fn from_base64(encoded: &str) -> Vec<u8> {
-  match base64::decode(encoded) {
-    Ok(bytes) => bytes,
-    _ => panic!(),
-  }
+  base64::decode(encoded).expect("Failed to decode Base64 string")
 }
 
 pub fn to_base64(bytes: &Vec<u8>) -> String {
   base64::encode(&bytes)
+}
+
+pub fn xor(a: &Vec<u8>, b: &Vec<u8>) -> Vec<u8> {
+  let len = cmp::min(a.len(), b.len());
+  let mut c = Vec::new();
+  for i in 0..len {
+    c.push(a[i] ^ b[i])
+  }
+  c
 }
 
 pub trait Bytes {
@@ -44,7 +47,7 @@ impl Bytes for Vec<u8> {
   }
 }
 
-impl EncodedBytes for &str{
+impl EncodedBytes for &str {
   fn from_hex(&self) -> Vec<u8> {
     from_hex(&self)
   }
