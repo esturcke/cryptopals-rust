@@ -1,6 +1,8 @@
 mod bytes;
 mod challenge1;
 mod challenge2;
+mod challenge3;
+mod english;
 
 #[derive(Debug)]
 struct Challenge {
@@ -33,6 +35,11 @@ fn main() {
             number: 2,
             solver: challenge2::solve,
             solution: "746865206b696420646f6e277420706c6179",
+        },
+        Challenge {
+            number: 3,
+            solver: challenge3::solve,
+            solution: "Cooking MC's like a pound of bacon",
         },
     ];
     for challenge in challenges.iter() {
