@@ -6,7 +6,7 @@ pub fn from_hex(encoded: &str) -> Vec<u8> {
     hex::decode(encoded).expect("Failed to decode hex string")
 }
 
-pub fn to_hex(bytes: &Vec<u8>) -> String {
+pub fn to_hex(bytes: &[u8]) -> String {
     hex::encode(bytes)
 }
 
@@ -14,11 +14,11 @@ pub fn from_base64(encoded: &str) -> Vec<u8> {
     base64::decode(encoded).expect("Failed to decode Base64 string")
 }
 
-pub fn to_base64(bytes: &Vec<u8>) -> String {
+pub fn to_base64(bytes: &[u8]) -> String {
     base64::encode(&bytes)
 }
 
-pub fn xor(a: &Vec<u8>, b: &Vec<u8>) -> Vec<u8> {
+pub fn xor(a: &[u8], b: &[u8]) -> Vec<u8> {
     let len = cmp::min(a.len(), b.len());
     let mut c = Vec::new();
     for i in 0..len {
@@ -27,7 +27,7 @@ pub fn xor(a: &Vec<u8>, b: &Vec<u8>) -> Vec<u8> {
     c
 }
 
-pub fn cycled_xor(a: &Vec<u8>, b: &Vec<u8>) -> Vec<u8> {
+pub fn cycled_xor(a: &[u8], b: &[u8]) -> Vec<u8> {
     let mut c = Vec::new();
     for i in 0..a.len() {
         c.push(a[i] ^ b[i % b.len()])
