@@ -4,7 +4,7 @@ use std::str;
 
 /// # Single-byte XOR cipher
 ///
-/// [Set 1 / Challenge 2](https://cryptopals.com/sets/1/challenges/3)
+/// [Set 1 / Challenge 3](https://cryptopals.com/sets/1/challenges/3)
 ///
 /// The hex encoded string:
 ///

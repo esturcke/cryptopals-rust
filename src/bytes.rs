@@ -64,3 +64,13 @@ impl EncodedBytes for &str {
         from_base64(&self)
     }
 }
+
+impl EncodedBytes for String {
+    fn from_hex(&self) -> Vec<u8> {
+        from_hex(&self)
+    }
+
+    fn from_base64(&self) -> Vec<u8> {
+        from_base64(&self)
+    }
+}

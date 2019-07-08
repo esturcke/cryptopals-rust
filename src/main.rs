@@ -2,6 +2,7 @@ mod bytes;
 mod challenge1;
 mod challenge2;
 mod challenge3;
+mod challenge4;
 mod english;
 
 #[derive(Debug)]
@@ -40,6 +41,11 @@ fn main() {
             number: 3,
             solver: challenge3::solve,
             solution: "Cooking MC's like a pound of bacon",
+        },
+        Challenge {
+            number: 4,
+            solver: challenge4::solve,
+            solution: "Now that the party is jumping\n",
         },
     ];
     for challenge in challenges.iter() {
