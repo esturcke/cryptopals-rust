@@ -4,16 +4,19 @@ mod challenge2;
 mod challenge3;
 mod challenge4;
 mod challenge5;
+mod challenge6;
 mod english;
+mod crack;
+use std::fs;
 
 #[derive(Debug)]
-struct Challenge {
+struct Challenge<'a> {
     number: u8,
     solver: fn() -> String,
-    solution: &'static str,
+    solution: &'a str,
 }
 
-impl Challenge {
+impl<'a> Challenge<'a> {
     fn check(&self) {
         let solution = (self.solver)();
         assert!(
@@ -27,6 +30,8 @@ impl Challenge {
 }
 
 fn main() {
+    let vanilla = fs::read_to_string("data/play-that-funky-music.txt").expect("Can't load lyrics");
+
     let challenges = [
         Challenge {
             number: 1,
@@ -52,6 +57,11 @@ fn main() {
             number: 5,
             solver: challenge5::solve,
             solution: "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f",
+        },
+                Challenge {
+            number: 6,
+            solver: challenge6::solve,
+            solution: &vanilla,
         },
     ];
     for challenge in challenges.iter() {

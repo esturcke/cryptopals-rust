@@ -1,4 +1,5 @@
 use std::cmp;
+use std::str;
 extern crate base64;
 extern crate hex;
 
@@ -35,9 +36,29 @@ pub fn cycled_xor(a: &[u8], b: &[u8]) -> Vec<u8> {
     c
 }
 
+pub fn edit_distance(a: &[u8], b: &[u8]) -> u32 {
+    let mut distance = 0;
+    let len = cmp::min(a.len(), b.len());
+    for i in 0..len {
+        distance += (a[i] ^ b[i]).count_ones()
+    }
+    distance
+}
+
+pub fn cycled_chunk(a: &[u8], len: usize) -> Vec<Vec<u8>> {
+    let mut chunks: Vec<Vec<u8>> = vec![Vec::new(); len];
+    for chunk in a.chunks(len) {
+        for (i, &b) in chunk.iter().enumerate() {
+            chunks[i].push(b)
+        }
+    }
+    chunks
+}
+
 pub trait Bytes {
     fn to_hex(&self) -> String;
     fn to_base64(&self) -> String;
+    fn as_string(&self) -> String;
 }
 
 pub trait EncodedBytes {
@@ -52,6 +73,10 @@ impl Bytes for Vec<u8> {
 
     fn to_base64(&self) -> String {
         to_base64(&self)
+    }
+
+    fn as_string(&self) -> String {
+        str::from_utf8(&self).unwrap().to_string()
     }
 }
 
@@ -72,5 +97,15 @@ impl EncodedBytes for String {
 
     fn from_base64(&self) -> Vec<u8> {
         from_base64(&self)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn wokka_wokka_edit_distance() {
+        assert_eq!(edit_distance(b"this is a test", b"wokka wokka!!!"), 37);
     }
 }

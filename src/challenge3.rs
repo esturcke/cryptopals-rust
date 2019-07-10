@@ -1,6 +1,5 @@
 use crate::bytes::*;
 use crate::english;
-use std::str;
 
 /// # Single-byte XOR cipher
 ///
@@ -31,5 +30,5 @@ pub fn solve() -> String {
         .max_by(|(_, score1), (_, score2)| score1.partial_cmp(score2).unwrap())
         .unwrap();
 
-    str::from_utf8(&pt).unwrap().to_string()
+    pt.as_string()
 }
