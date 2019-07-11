@@ -5,8 +5,10 @@ mod challenge3;
 mod challenge4;
 mod challenge5;
 mod challenge6;
-mod english;
+mod challenge7;
+
 mod crack;
+mod english;
 use std::fs;
 
 #[derive(Debug)]
@@ -58,9 +60,14 @@ fn main() {
             solver: challenge5::solve,
             solution: "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f",
         },
-                Challenge {
+        Challenge {
             number: 6,
             solver: challenge6::solve,
+            solution: &vanilla,
+        },
+        Challenge {
+            number: 7,
+            solver: challenge7::solve,
             solution: &vanilla,
         },
     ];
