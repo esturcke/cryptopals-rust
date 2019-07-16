@@ -2,7 +2,7 @@ use crate::bytes::*;
 use openssl::symm::{decrypt, Cipher};
 use std::fs;
 
-/// # Implement repeating-key XOR
+/// # AES in ECB mode
 ///
 /// [Set 1 / Challenge 7](https://cryptopals.com/sets/1/challenges/7)
 ///

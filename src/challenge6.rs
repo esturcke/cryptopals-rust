@@ -2,7 +2,7 @@ use crate::bytes::*;
 use crate::crack;
 use std::fs;
 
-/// # Implement repeating-key XOR
+/// # Break repeating-key XOR
 ///
 /// [Set 1 / Challenge 6](https://cryptopals.com/sets/1/challenges/6)
 ///
