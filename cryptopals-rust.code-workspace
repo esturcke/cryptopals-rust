@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "cSpell.words": []
+  },
+  "extensions": {
+    "recommendations": [
+      "streetsidesoftware.code-spell-checker",
+      "rust-lang.rust"
+    ]
+  }
+}
