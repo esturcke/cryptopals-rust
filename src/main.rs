@@ -8,6 +8,7 @@ mod challenge6;
 mod challenge7;
 mod challenge8;
 mod challenge9;
+mod challenge10;
 
 mod crack;
 mod english;
@@ -81,6 +82,11 @@ fn main() {
             number: 9,
             solver: challenge9::solve,
             solution: "YELLOW SUBMARINE\x04\x04\x04\x04",
+        },
+        Challenge {
+            number: 10,
+            solver: challenge10::solve,
+            solution: &vanilla,
         },
     ];
     for challenge in challenges.iter() {
