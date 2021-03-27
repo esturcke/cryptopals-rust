@@ -56,15 +56,15 @@ pub fn cycled_chunk(a: &[u8], len: usize) -> Vec<Vec<u8>> {
 }
 
 pub fn pad_pkcs7(a: &[u8], block_size: usize) -> Vec<u8> {
-    let n = block_size - a.len()%block_size;
-    [a, &vec!(n as u8; n)[..]].concat()
+    let n = block_size - a.len() % block_size;
+    [a, &vec![n as u8; n][..]].concat()
 }
 
 pub trait Bytes {
     fn to_hex(&self) -> String;
     fn to_base64(&self) -> String;
     fn as_string(&self) -> String;
-    fn pad_pkcs7(&self, block_size: usize) ->Vec<u8>;
+    fn pad_pkcs7(&self, block_size: usize) -> Vec<u8>;
 }
 
 pub trait EncodedBytes {

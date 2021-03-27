@@ -7,7 +7,12 @@
   "settings": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "rust-lang.rust",
-    "cSpell.words": ["ciphertext", "ciphertexts", "pkcs"]
+    "cSpell.words": [
+      "ciphertext",
+      "ciphertexts",
+      "concat",
+      "pkcs"
+    ]
   },
   "extensions": {
     "recommendations": [
