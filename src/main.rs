@@ -11,6 +11,7 @@ mod challenge8;
 mod challenge9;
 
 mod crack;
+mod crypt;
 mod english;
 use std::fs;
 

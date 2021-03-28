@@ -1,4 +1,6 @@
 use crate::bytes::*;
+use crate::crypt::*;
+use std::fs;
 
 /// # Implement CBC mode
 ///
@@ -17,5 +19,12 @@ use crate::bytes::*;
 /// Don't cheat.
 /// Do not use OpenSSL's CBC code to do CBC mode, even to verify your results. What's the point of even doing this stuff if you aren't going to learn from it?
 pub fn solve() -> String {
-    b"YELLOW SUBMARINE".pad_pkcs7(20).as_string()
+    let key = b"YELLOW SUBMARINE";
+    let iv = b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00";
+    let ct = fs::read_to_string("data/10.txt")
+        .expect("Can't load ct")
+        .replace("\n", "")
+        .from_base64();
+
+    strip_pkcs7(&decrypt_cbc(key, iv, &ct)).as_string()
 }

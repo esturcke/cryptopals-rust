@@ -5,6 +5,7 @@ authors = ["Erik J. Sturcke <esturcke@cisco.com>"]
 edition = "2018"
 
 [dependencies]
+aes = "0.6.0"
 base64 = "0.10.1"
 hex = "0.3.2"
 openssl = "0.10.23"
