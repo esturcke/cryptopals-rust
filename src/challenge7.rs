@@ -1,5 +1,5 @@
 use crate::bytes::*;
-use openssl::symm::{decrypt, Cipher};
+use crate::crypt::*;
 use std::fs;
 
 /// # AES in ECB mode
@@ -22,12 +22,11 @@ use std::fs;
 ///
 /// You can obviously decrypt this using the OpenSSL command-line tool, but we're having you get ECB working in code for a reason. You'll need it a lot later on, and not just for attacking ECB..
 pub fn solve() -> String {
-    let cipher = Cipher::aes_128_ecb();
     let key = b"YELLOW SUBMARINE";
     let ct = fs::read_to_string("data/7.txt")
         .expect("Can't load ct")
         .replace("\n", "")
         .from_base64();
 
-    decrypt(cipher, key, None, &ct).unwrap().as_string()
+    decrypt_ecb(key, &ct).as_string()
 }

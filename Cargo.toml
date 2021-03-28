@@ -1,11 +1,10 @@
 [package]
 name = "cryptopals-rust"
 version = "0.1.0"
-authors = ["Erik J. Sturcke <esturcke@cisco.com>"]
+authors = ["Erik J. Sturcke <erik@sturcke.dev>"]
 edition = "2018"
 
 [dependencies]
 aes = "0.6.0"
 base64 = "0.10.1"
 hex = "0.3.2"
-openssl = "0.10.23"

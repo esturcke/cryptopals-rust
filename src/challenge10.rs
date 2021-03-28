@@ -26,5 +26,5 @@ pub fn solve() -> String {
         .replace("\n", "")
         .from_base64();
 
-    strip_pkcs7(&decrypt_cbc(key, iv, &ct)).as_string()
+    decrypt_cbc(key, iv, &ct).as_string()
 }
