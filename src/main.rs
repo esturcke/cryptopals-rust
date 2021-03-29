@@ -1,6 +1,7 @@
 mod bytes;
 mod challenge1;
 mod challenge10;
+mod challenge11;
 mod challenge2;
 mod challenge3;
 mod challenge4;
@@ -88,6 +89,11 @@ fn main() {
             number: 10,
             solver: challenge10::solve,
             solution: &vanilla,
+        },
+        Challenge {
+            number: 11,
+            solver: challenge11::solve,
+            solution: "done",
         },
     ];
     for challenge in challenges.iter() {
