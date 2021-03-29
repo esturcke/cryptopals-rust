@@ -1,7 +1,11 @@
+#[macro_use]
+extern crate lazy_static;
+
 mod bytes;
 mod challenge1;
 mod challenge10;
 mod challenge11;
+mod challenge12;
 mod challenge2;
 mod challenge3;
 mod challenge4;
@@ -38,6 +42,7 @@ impl<'a> Challenge<'a> {
 
 fn main() {
     let vanilla = fs::read_to_string("data/play-that-funky-music.txt").expect("Can't load lyrics");
+    let ice_ice_baby = fs::read_to_string("data/ice-ice-baby.txt").expect("Can't load lyrics");
 
     let challenges = [
         Challenge {
@@ -94,6 +99,11 @@ fn main() {
             number: 11,
             solver: challenge11::solve,
             solution: "done",
+        },
+        Challenge {
+            number: 12,
+            solver: challenge12::solve,
+            solution: &ice_ice_baby,
         },
     ];
     for challenge in challenges.iter() {
