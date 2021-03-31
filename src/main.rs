@@ -9,6 +9,7 @@ mod challenge12;
 mod challenge13;
 mod challenge14;
 mod challenge15;
+mod challenge16;
 mod challenge2;
 mod challenge3;
 mod challenge4;
@@ -122,6 +123,11 @@ fn main() {
             number: 15,
             solver: challenge15::solve,
             solution: "done",
+        },
+        Challenge {
+            number: 16,
+            solver: challenge16::solve,
+            solution: "true",
         },
     ];
     for challenge in challenges.iter() {
