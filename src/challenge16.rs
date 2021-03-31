@@ -81,6 +81,7 @@ fn escape(string: &[u8]) -> Vec<u8> {
 
 fn get_admin(ct: &[u8]) -> String {
   let query = decrypt_cbc(&KEY, &IV, &ct)
+    .expect("Correct padding")
     .into_iter()
     .filter(|&x| x < 128)
     .collect::<Vec<u8>>()

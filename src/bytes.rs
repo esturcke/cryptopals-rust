@@ -66,11 +66,17 @@ pub fn pad_pkcs7(a: &[u8], block_size: usize) -> Vec<u8> {
   [a, &vec![n as u8; n][..]].concat()
 }
 
-pub fn strip_pkcs7(a: &[u8]) -> Vec<u8> {
+pub fn strip_pkcs7(a: &[u8]) -> Result<Vec<u8>, &'static str> {
   let n = a[a.len() - 1];
+  if n as usize >= a.len() {
+    return Err("Invalid padding");
+  }
   let (message, padding) = a.split_at(a.len() - n as usize);
-  assert_eq!(&vec![n; n as usize][..], padding, "Invalid padding");
-  message.to_owned()
+  if &vec![n; n as usize][..] == padding {
+    Ok(message.to_owned())
+  } else {
+    Err("Invalid padding")
+  }
 }
 
 pub trait Bytes {

@@ -28,5 +28,7 @@ pub fn solve() -> String {
         .replace("\n", "")
         .from_base64();
 
-    decrypt_ecb(key, &ct).as_string()
+    decrypt_ecb(key, &ct)
+        .expect("Expected correct padding")
+        .as_string()
 }

@@ -31,14 +31,14 @@ use crate::bytes::*;
 /// Crypto nerds know where we're going with this. Bear with us.
 pub fn solve() -> String {
   assert_eq!(
-    strip_pkcs7(b"ICE ICE BABY\x04\x04\x04\x04"),
+    strip_pkcs7(b"ICE ICE BABY\x04\x04\x04\x04").expect("Expected correct padding"),
     b"ICE ICE BABY"
   );
 
-  // assert_eq!(
-  //   strip_pkcs7(b"ICE ICE BABY\x01\x02\x03\x04"),
-  //   b"ICE ICE BABY"
-  // );
+  assert_eq!(
+    strip_pkcs7(b"ICE ICE BABY\x01\x02\x03\x04").expect_err("Expect error"),
+    "Invalid padding"
+  );
 
   String::from("done")
 }

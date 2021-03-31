@@ -34,7 +34,7 @@ pub fn encrypt_ecb(key: &[u8], pt: &[u8]) -> Vec<u8> {
   ct
 }
 
-pub fn decrypt_ecb(key: &[u8], ct: &[u8]) -> Vec<u8> {
+pub fn decrypt_ecb(key: &[u8], ct: &[u8]) -> Result<Vec<u8>, &'static str> {
   assert_eq!(key.len(), 16, "Key length must be 16 for decryption");
   assert_eq!(ct.len() % 16, 0, "CT length must be divisible by 16");
 
@@ -62,7 +62,7 @@ pub fn encrypt_cbc(key: &[u8], iv: &[u8], pt: &[u8]) -> Vec<u8> {
   ct
 }
 
-pub fn decrypt_cbc(key: &[u8], iv: &[u8], ct: &[u8]) -> Vec<u8> {
+pub fn decrypt_cbc(key: &[u8], iv: &[u8], ct: &[u8]) -> Result<Vec<u8>, &'static str> {
   assert_eq!(key.len(), 16, "Key length must be 16 for decryption");
   assert_eq!(iv.len(), 16, "IV length must be 16 for decryption");
   assert_eq!(ct.len() % 16, 0, "CT length must be divisible by 16");

@@ -96,7 +96,7 @@ fn encrypt(pt: &[u8]) -> Vec<u8> {
 }
 
 fn decrypt(ct: &[u8]) -> Vec<u8> {
-  decrypt_ecb(&KEY, ct)
+  decrypt_ecb(&KEY, ct).expect("Expected correct padding")
 }
 
 fn encrypted_profile(email: &str) -> Vec<u8> {
