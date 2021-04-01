@@ -77,3 +77,18 @@ pub fn decrypt_cbc(key: &[u8], iv: &[u8], ct: &[u8]) -> Result<Vec<u8>, &'static
 
   strip_pkcs7(&pt)
 }
+
+pub fn encrypt_ctr(key: &[u8; 16], nonce: &[u8; 8], pt: &[u8]) -> Vec<u8> {
+  let cipher = aes128(key);
+  let mut ct = Vec::new();
+  for (count, block) in pt.chunks(16).enumerate() {
+    let pad = &encrypt_block(&cipher, &[*nonce, count.to_le_bytes()].concat());
+    ct.extend_from_slice(&xor(&pad, block));
+  }
+
+  ct
+}
+
+pub fn decrypt_ctr(key: &[u8; 16], iv: &[u8; 8], ct: &[u8]) -> Vec<u8> {
+  encrypt_ctr(key, iv, ct)
+}
