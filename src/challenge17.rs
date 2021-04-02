@@ -71,12 +71,16 @@ fn decrypt(iv: Vec<u8>, ct: Vec<u8>) -> Vec<u8> {
 
     // If the second to last byte is 2, we probably are decrypting to 16, 15...2, x
     // In this case, use the last match
-    if pt_block[block_size - 2] <= 16 {
+    if pt_block[block_size - 2] == 2 {
       pt_block = decrypt_last_block(&[&iv, &ct[..i]].concat(), false);
     }
     pt[i - block_size..i].copy_from_slice(&pt_block);
   }
-  strip_pkcs7(&pt).expect("Valid padding")
+  if let Ok(stripped) = strip_pkcs7(&pt) {
+    stripped
+  } else {
+    pt
+  }
 }
 
 fn decrypt_last_block(original_iv_and_ct: &[u8], pick_first: bool) -> Vec<u8> {

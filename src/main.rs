@@ -137,12 +137,11 @@ fn main() {
             solver: challenge16::solve,
             solution: "true",
         },
-        // Solved by flaky
-        // Challenge {
-        //     number: 17,
-        //     solver: challenge17::solve,
-        //     solution: "yay",
-        // },
+        Challenge {
+            number: 17,
+            solver: challenge17::solve,
+            solution: "yay",
+        },
         Challenge {
             number: 18,
             solver: challenge18::solve,
