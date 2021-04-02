@@ -1,5 +1,4 @@
 use crate::bytes::*;
-use crate::crypt::*;
 use crate::english;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
