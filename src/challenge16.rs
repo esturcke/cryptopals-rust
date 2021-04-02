@@ -88,12 +88,8 @@ fn get_admin(ct: &[u8]) -> String {
     .as_string();
   for field in query.split(';') {
     let mut parts = field.split('=');
-    let (key, value) = (
-      String::from(parts.next().unwrap()),
-      String::from(parts.next().unwrap()),
-    );
-    if key == "admin" {
-      return value;
+    if let (Some("admin"), Some(value)) = (parts.next(), parts.next()) {
+      return String::from(value);
     }
   }
   String::from("")
