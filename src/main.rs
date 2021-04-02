@@ -14,6 +14,7 @@ mod challenge17;
 mod challenge18;
 mod challenge19;
 mod challenge2;
+mod challenge20;
 mod challenge3;
 mod challenge4;
 mod challenge5;
@@ -37,19 +38,23 @@ struct Challenge<'a> {
 impl<'a> Challenge<'a> {
     fn check(&self) {
         let solution = (self.solver)();
-        assert!(
-            solution == self.solution,
-            "Solution {} incorrect\n\n{}\n\n  should be  \n\n{}\n\n",
-            self.number,
-            solution,
-            self.solution
-        );
+        if solution != self.solution {
+            println!(
+                "Solution {} is wrong\n\n{}\n{:?}\n\n    should be\n\n{}\n{:?}\n\n",
+                self.number,
+                solution,
+                solution.as_bytes(),
+                self.solution,
+                self.solution.as_bytes()
+            );
+        }
     }
 }
 
 fn main() {
     let vanilla = fs::read_to_string("data/play-that-funky-music.txt").expect("Can't load lyrics");
     let ice_ice_baby = fs::read_to_string("data/ice-ice-baby.txt").expect("Can't load lyrics");
+    let fury = fs::read_to_string("data/fury.txt").expect("Can't load lyrics");
 
     let challenges = [
         Challenge {
@@ -147,6 +152,11 @@ fn main() {
             number: 19,
             solver: challenge19::solve,
             solution: "yay",
+        },
+        Challenge {
+            number: 20,
+            solver: challenge20::solve,
+            solution: &fury,
         },
     ];
     for challenge in challenges.iter() {
