@@ -49,7 +49,7 @@ pub fn random_from_seed(seed: u32) -> Rand {
 }
 
 impl Rand {
-  fn seed(&mut self, seed: u32) {
+  pub fn seed(&mut self, seed: u32) {
     self.mt[0] = seed;
     for i in 1usize..N {
       self.mt[i] = F.wrapping_mul(self.mt[i - 1] ^ (self.mt[i - 1] >> (W - 2))) + i as u32;
