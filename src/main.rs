@@ -15,6 +15,7 @@ mod challenge18;
 mod challenge19;
 mod challenge2;
 mod challenge20;
+mod challenge21;
 mod challenge3;
 mod challenge4;
 mod challenge5;
@@ -26,6 +27,7 @@ mod challenge9;
 mod crack;
 mod crypt;
 mod english;
+mod rand;
 use std::fs;
 
 #[derive(Debug)]
@@ -156,6 +158,11 @@ fn main() {
             number: 20,
             solver: challenge20::solve,
             solution: &fury,
+        },
+        Challenge {
+            number: 21,
+            solver: challenge21::solve,
+            solution: "1585191914",
         },
     ];
     for challenge in challenges.iter() {
