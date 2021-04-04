@@ -1,4 +1,5 @@
 use crate::bytes::*;
+use crate::rand::*;
 use aes::cipher::generic_array::GenericArray;
 use aes::cipher::{BlockCipher, NewBlockCipher};
 use aes::Aes128;
@@ -93,4 +94,18 @@ pub fn encrypt_ctr(key: &[u8], nonce: &[u8; 8], pt: &[u8]) -> Vec<u8> {
 
 pub fn decrypt_ctr(key: &[u8], iv: &[u8; 8], ct: &[u8]) -> Vec<u8> {
   encrypt_ctr(key, iv, ct)
+}
+
+pub fn encrypt_mt(seed: u32, pt: &[u8]) -> Vec<u8> {
+  let generator = random_from_seed(seed);
+  let mut ct = Vec::new();
+  for (block, pad) in pt.chunks(4).zip(generator) {
+    ct.extend_from_slice(&xor(&pad.to_le_bytes(), block));
+  }
+
+  ct
+}
+
+pub fn decrypt_mt(seed: u32, ct: &[u8]) -> Vec<u8> {
+  encrypt_mt(seed, ct)
 }

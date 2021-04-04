@@ -4,7 +4,6 @@ const M: usize = 397;
 const R: u8 = 31;
 const A: u32 = 0x9908B0DF;
 const U: u8 = 11;
-const D: u32 = 0xFFFFFFFF;
 const S: u8 = 7;
 const B: u32 = 0x9D2C5680;
 const T: u8 = 15;
@@ -14,9 +13,10 @@ const F: u32 = 1812433253;
 const LOWER_MASK: u32 = (1u32 << R) - 1;
 const UPPER_MASK: u32 = !LOWER_MASK;
 
+#[derive(Debug)]
 pub struct Rand {
-  index: usize,
-  mt: [u32; N],
+  pub index: usize,
+  pub mt: [u32; N],
 }
 
 impl Iterator for Rand {
@@ -27,15 +27,10 @@ impl Iterator for Rand {
       twist(self);
     }
 
-    let mut y = self.mt[self.index];
+    let y = self.mt[self.index];
     self.index += 1;
 
-    y ^= (y >> U) & D;
-    y ^= (y << S) & B;
-    y ^= (y << T) & C;
-    y ^= y >> L;
-
-    Some(y)
+    Some(temper(y))
   }
 }
 
@@ -54,6 +49,36 @@ impl Rand {
     for i in 1usize..N {
       self.mt[i] = F.wrapping_mul(self.mt[i - 1] ^ (self.mt[i - 1] >> (W - 2))) + i as u32;
     }
+  }
+}
+
+pub fn temper(x: u32) -> u32 {
+  let mut y = x;
+  y ^= y >> U;
+  y ^= (y << S) & B;
+  y ^= (y << T) & C;
+  y ^= y >> L;
+  y
+}
+
+pub fn untemper(y: u32) -> u32 {
+  let mut x = y;
+  reverse_right(&mut x, L);
+  reverse_left(&mut x, T, C);
+  reverse_left(&mut x, S, B);
+  reverse_right(&mut x, U);
+  x
+}
+
+fn reverse_left(x: &mut u32, n: u8, mask: u32) {
+  for i in 0..32 {
+    *x ^= (*x << n) & (1 << i) & mask;
+  }
+}
+
+fn reverse_right(x: &mut u32, n: u8) {
+  for i in (0..32).rev() {
+    *x ^= (*x >> n) & (1 << i);
   }
 }
 
