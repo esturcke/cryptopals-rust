@@ -81,7 +81,7 @@ pub fn decrypt_cbc(key: &[u8], iv: &[u8], ct: &[u8]) -> Result<Vec<u8>, &'static
 
 pub fn encrypt_ctr(key: &[u8], nonce: &[u8; 8], pt: &[u8]) -> Vec<u8> {
   assert_eq!(key.len(), 16, "Key length must be 16 for decryption");
-  assert_eq!(nonce.len(), 8, "Nonce length must be 16 for decryption");
+  assert_eq!(nonce.len(), 8, "Nonce length must be 8 for decryption");
   let cipher = aes128(key);
   let mut ct = Vec::new();
   for (count, block) in pt.chunks(16).enumerate() {
@@ -92,8 +92,8 @@ pub fn encrypt_ctr(key: &[u8], nonce: &[u8; 8], pt: &[u8]) -> Vec<u8> {
   ct
 }
 
-pub fn decrypt_ctr(key: &[u8], iv: &[u8; 8], ct: &[u8]) -> Vec<u8> {
-  encrypt_ctr(key, iv, ct)
+pub fn decrypt_ctr(key: &[u8], nonce: &[u8; 8], ct: &[u8]) -> Vec<u8> {
+  encrypt_ctr(key, nonce, ct)
 }
 
 pub fn encrypt_mt(seed: u32, pt: &[u8]) -> Vec<u8> {
