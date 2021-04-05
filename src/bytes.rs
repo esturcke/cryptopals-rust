@@ -9,6 +9,22 @@ pub fn random_bytes(n: usize) -> Vec<u8> {
   (0..n).map(|_| random()).collect()
 }
 
+pub fn random_8() -> [u8; 8] {
+  let mut value = [0u8; 8];
+  for (i, &b) in random_bytes(8).iter().enumerate() {
+    value[i] = b;
+  }
+  value
+}
+
+pub fn random_16() -> [u8; 16] {
+  let mut value = [0u8; 16];
+  for (i, &b) in random_bytes(16).iter().enumerate() {
+    value[i] = b;
+  }
+  value
+}
+
 pub fn from_hex(encoded: &str) -> Vec<u8> {
   hex::decode(encoded).expect("Failed to decode hex string")
 }
@@ -32,6 +48,10 @@ pub fn xor(a: &[u8], b: &[u8]) -> Vec<u8> {
     c.push(a[i] ^ b[i])
   }
   c
+}
+
+pub fn not(a: &[u8]) -> Vec<u8> {
+  a.iter().map(|&b| !b).collect()
 }
 
 pub fn cycled_xor(a: &[u8], b: &[u8]) -> Vec<u8> {

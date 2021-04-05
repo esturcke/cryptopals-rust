@@ -31,7 +31,7 @@ pub fn solve() -> String {
   // Clone the ct and edit it with all 1s
   let mut clone = ct.clone();
   edit(&mut clone, 0, &vec![255u8; ct.len()]);
-  let pad: Vec<_> = clone.iter().map(|&b| !b).collect();
+  let pad = not(&clone);
 
   // Decrypt by xor with the inverse
   let decrypted = xor(&ct, &pad);

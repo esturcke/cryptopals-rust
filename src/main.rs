@@ -20,6 +20,7 @@ mod challenge22;
 mod challenge23;
 mod challenge24;
 mod challenge25;
+mod challenge26;
 mod challenge3;
 mod challenge4;
 mod challenge5;
@@ -186,6 +187,11 @@ fn main() {
         Challenge {
             number: 25,
             solver: challenge25::solve,
+            solution: "yay",
+        },
+        Challenge {
+            number: 26,
+            solver: challenge26::solve,
             solution: "yay",
         },
     ];
