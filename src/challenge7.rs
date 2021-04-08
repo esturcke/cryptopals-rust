@@ -22,13 +22,13 @@ use std::fs;
 ///
 /// You can obviously decrypt this using the OpenSSL command-line tool, but we're having you get ECB working in code for a reason. You'll need it a lot later on, and not just for attacking ECB..
 pub fn solve() -> String {
-    let key = b"YELLOW SUBMARINE";
-    let ct = fs::read_to_string("data/7.txt")
-        .expect("Can't load ct")
-        .replace("\n", "")
-        .from_base64();
+  let key = b"YELLOW SUBMARINE";
+  let ct = fs::read_to_string("data/7.txt")
+    .expect("Can't load ct")
+    .replace("\n", "")
+    .from_base64();
 
-    decrypt_ecb(key, &ct)
-        .expect("Expected correct padding")
-        .as_string()
+  decrypt_ecb(key, &ct)
+    .expect("Expected correct padding")
+    .as_string()
 }

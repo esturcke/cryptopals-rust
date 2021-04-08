@@ -23,7 +23,7 @@ use crate::bytes::*;
 ///
 /// Encrypt a bunch of stuff using your repeating-key XOR function. Encrypt your mail. Encrypt your password file. Your .sig file. Get a feel for it. I promise, we aren't wasting your time with this.
 pub fn solve() -> String {
-    let pt = b"Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal";
-    let key = b"ICE";
-    cycled_xor(pt, key).to_hex()
+  let pt = b"Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal";
+  let key = b"ICE";
+  cycled_xor(pt, key).to_hex()
 }

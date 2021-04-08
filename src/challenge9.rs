@@ -20,5 +20,5 @@ use crate::bytes::*;
 /// "YELLOW SUBMARINE\x04\x04\x04\x04"
 /// ```
 pub fn solve() -> String {
-    b"YELLOW SUBMARINE".pad_pkcs7(20).as_string()
+  b"YELLOW SUBMARINE".pad_pkcs7(20).as_string()
 }

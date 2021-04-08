@@ -15,15 +15,15 @@ use std::io::{BufRead, BufReader};
 ///
 /// Remember that the problem with ECB is that it is stateless and deterministic; the same 16 byte plaintext block will always produce the same 16 byte ciphertext.
 pub fn solve() -> String {
-    let file = File::open("data/8.txt").expect("Failed to open file");
-    BufReader::new(file)
-        .lines()
-        .map(|line| line.unwrap())
-        .find(|line| has_repeats(&line.from_hex()))
-        .expect("Nothing found with repeats")
+  let file = File::open("data/8.txt").expect("Failed to open file");
+  BufReader::new(file)
+    .lines()
+    .map(|line| line.unwrap())
+    .find(|line| has_repeats(&line.from_hex()))
+    .expect("Nothing found with repeats")
 }
 
 fn has_repeats(bytes: &[u8]) -> bool {
-    let mut blocks: HashSet<&[u8]> = HashSet::new();
-    bytes.chunks(16).any(|block| !blocks.insert(block))
+  let mut blocks: HashSet<&[u8]> = HashSet::new();
+  bytes.chunks(16).any(|block| !blocks.insert(block))
 }

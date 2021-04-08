@@ -36,33 +36,33 @@ use std::fs;
 ///
 /// This code is going to turn out to be surprisingly useful later on. Breaking repeating-key XOR ("Vigenere") statistically is obviously an academic exercise, a "Crypto 101" thing. But more people "know how" to break it than can actually break it, and a similar technique breaks something much more important.
 pub fn solve() -> String {
-    let ct = fs::read_to_string("data/6.txt")
-        .expect("Can't load ct")
-        .replace("\n", "")
-        .from_base64();
-    let key_length = guess_key_length(&ct);
+  let ct = fs::read_to_string("data/6.txt")
+    .expect("Can't load ct")
+    .replace("\n", "")
+    .from_base64();
+  let key_length = guess_key_length(&ct);
 
-    // construct the key
-    let mut key: Vec<u8> = Vec::new();
-    for chunk in cycled_chunk(&ct, key_length) {
-        key.push(crack::guess_xor_key(&chunk));
-    }
+  // construct the key
+  let mut key: Vec<u8> = Vec::new();
+  for chunk in cycled_chunk(&ct, key_length) {
+    key.push(crack::guess_xor_key(&chunk));
+  }
 
-    cycled_xor(&ct, &key).as_string()
+  cycled_xor(&ct, &key).as_string()
 }
 
 fn guess_key_length(ct: &[u8]) -> usize {
-    (1..40usize)
-        .map(|l| (l, sampled_edit_distance(ct, l)))
-        .min_by(|(_, dist1), (_, dist2)| dist1.partial_cmp(dist2).unwrap())
-        .unwrap()
-        .0
+  (1..40usize)
+    .map(|l| (l, sampled_edit_distance(ct, l)))
+    .min_by(|(_, dist1), (_, dist2)| dist1.partial_cmp(dist2).unwrap())
+    .unwrap()
+    .0
 }
 
 fn sampled_edit_distance(ct: &[u8], l: usize) -> f64 {
-    let samples = 40usize;
-    let sum: u32 = (0..samples)
-        .map(|offset| edit_distance(&ct[offset..offset + l], &ct[offset + l..offset + 2 * l]))
-        .sum();
-    sum as f64 / (samples * l) as f64
+  let samples = 40usize;
+  let sum: u32 = (0..samples)
+    .map(|offset| edit_distance(&ct[offset..offset + l], &ct[offset + l..offset + 2 * l]))
+    .sum();
+  sum as f64 / (samples * l) as f64
 }
