@@ -203,7 +203,7 @@ fn main() {
   Challenge {
     number: 28,
     solver: challenge28::solve,
-    solution: "yay",
+    solution: "d6321fe951feb4ae01c71737aefee61d2cf721ea",
   },
   ];
   for challenge in challenges.iter() {

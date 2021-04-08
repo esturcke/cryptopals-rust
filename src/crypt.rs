@@ -190,3 +190,7 @@ pub fn sha1(message: &[u8]) -> [u8; SHA1_LENGTH] {
   }
   result
 }
+
+pub fn sha1_mac(key: &[u8], message: &[u8]) -> [u8; SHA1_LENGTH] {
+  sha1(&[key, message].concat())
+}

@@ -19,8 +19,5 @@ use crate::crypt::*;
 ///
 /// Verify that you cannot tamper with the message without breaking the MAC you've produced, and that you can't produce a new MAC without knowing the secret key.
 pub fn solve() -> String {
-  let a = sha1(b"hello");
-  assert_eq!(a.to_hex(), "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d");
-
-  String::from("yay")
+  sha1_mac(b"secret", b"hello").to_hex()
 }
