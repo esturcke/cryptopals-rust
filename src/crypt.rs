@@ -113,6 +113,21 @@ pub fn decrypt_mt(seed: u32, ct: &[u8]) -> Vec<u8> {
 const SHA1_LENGTH: usize = 20;
 
 pub fn sha1(message: &[u8]) -> [u8; SHA1_LENGTH] {
+  let initial = [
+    0x67452301u32,
+    0xEFCDAB89,
+    0x98BADCFE,
+    0x10325476,
+    0xC3D2E1F0,
+  ];
+  sha1_extend(message, &initial, 0)
+}
+
+pub fn sha1_extend(
+  message: &[u8],
+  initial: &[u32; SHA1_LENGTH / 4],
+  length_offset: usize,
+) -> [u8; SHA1_LENGTH] {
   let f = |t: usize, b: u32, c: u32, d: u32| match t {
     0..=19 => (b & c) | (!b & d),
     20..=39 => b ^ c ^ d,
@@ -129,20 +144,14 @@ pub fn sha1(message: &[u8]) -> [u8; SHA1_LENGTH] {
     _ => panic!("Invalid value {} for t", t),
   };
 
-  let mut digest = [
-    0x67452301u32,
-    0xEFCDAB89,
-    0x98BADCFE,
-    0x10325476,
-    0xC3D2E1F0,
-  ];
+  let mut digest = initial.clone();
 
   // Pad the message and split into chunks to process
   for m in [
     message,
     &[1u8 << 7],
     &vec![0; 63 - ((message.len() + 8) % 64)][..],
-    &(message.len() as u64 * 8).to_be_bytes(),
+    &((message.len() + length_offset) as u64 * 8).to_be_bytes(),
   ]
   .concat()
   .chunks(16 * 4)

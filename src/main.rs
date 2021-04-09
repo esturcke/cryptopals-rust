@@ -23,6 +23,7 @@ mod challenge25;
 mod challenge26;
 mod challenge27;
 mod challenge28;
+mod challenge29;
 mod challenge3;
 mod challenge4;
 mod challenge5;
@@ -65,7 +66,7 @@ fn main() {
   let ice_ice_baby = fs::read_to_string("data/ice-ice-baby.txt").expect("Can't load lyrics");
   let fury = fs::read_to_string("data/fury.txt").expect("Can't load lyrics");
   let challenges = [
-  Challenge {
+    Challenge {
     number: 1,
     solver: challenge1::solve,
     solution: "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t",
@@ -204,6 +205,11 @@ fn main() {
     number: 28,
     solver: challenge28::solve,
     solution: "d6321fe951feb4ae01c71737aefee61d2cf721ea",
+  },
+  Challenge {
+    number: 29,
+    solver: challenge29::solve,
+    solution: "yay",
   },
   ];
   for challenge in challenges.iter() {
