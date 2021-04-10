@@ -12,7 +12,10 @@
       "ciphertexts",
       "concat",
       "pkcs"
-    ]
+    ],
+    "[rust]": {
+      "editor.defaultFormatter": "matklad.rust-analyzer"
+    }
   },
   "extensions": {
     "recommendations": [
