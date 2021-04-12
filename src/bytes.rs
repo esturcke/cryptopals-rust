@@ -25,6 +25,14 @@ pub fn random_16() -> [u8; 16] {
   value
 }
 
+pub fn random_64() -> [u8; 64] {
+  let mut value = [0u8; 64];
+  for (i, &b) in random_bytes(64).iter().enumerate() {
+    value[i] = b;
+  }
+  value
+}
+
 pub fn from_hex(encoded: &str) -> Vec<u8> {
   hex::decode(encoded).expect("Failed to decode hex string")
 }

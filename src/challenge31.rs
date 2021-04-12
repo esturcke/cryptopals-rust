@@ -1,3 +1,5 @@
+use reqwest;
+
 /// # Implement and break HMAC-SHA1 with an artificial timing leak
 ///
 /// [Set 4 / Challenge 31](https://cryptopals.com/sets/4/challenges/31)
@@ -23,4 +25,23 @@
 /// ## Why artificial delays?
 ///
 /// Early-exit string compares are probably the most common source of cryptographic timing leaks, but they aren't especially easy to exploit. In fact, many timing leaks (for instance, any in C, C++, Ruby, or Python) probably aren't exploitable over a wide-area network at all. To play with attacking real-world timing leaks, you have to start writing low-level timing code. We're keeping things cryptographic in these challenges.
-pub async fn solve() {}
+pub async fn solve() {
+  let body = reqwest::get("http://localhost:9000/31/hello/there")
+    .await
+    .unwrap()
+    .text()
+    .await
+    .unwrap();
+
+  println!("body = {:?}", body);
+
+  // // Parse an `http::Uri`...
+  // let uri = "http://127.0.0.1:9000/hello/there".parse().unwrap();
+
+  //let client = Client::new();
+
+  // // Await the response...
+  // //  let resp = client.get(uri).await;
+
+  // //  println!("Response: {:?}", resp);
+}

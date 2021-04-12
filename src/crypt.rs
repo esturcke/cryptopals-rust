@@ -295,6 +295,15 @@ pub fn md5_mac(key: &[u8], message: &[u8]) -> [u8; MD5_LENGTH] {
   md5(&[key, message].concat())
 }
 
+pub fn hmac_sha1(key: &[u8; 64], message: &[u8]) -> [u8; SHA1_LENGTH] {
+  let o_key_pad = xor(key, &[0x5c; 64]);
+  let i_key_pad = xor(key, &[0x36; 64]);
+
+  // sha1([&o_key_pad, &sha1(&[&i_key_pad, message].concat())].concat())
+  let inner = sha1(&[&i_key_pad, message].concat()).to_vec();
+  sha1(&[o_key_pad, inner].concat())
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;

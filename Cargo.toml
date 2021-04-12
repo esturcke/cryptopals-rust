@@ -5,9 +5,15 @@ authors = ["Erik J. Sturcke <erik@sturcke.dev>"]
 edition = "2018"
 
 [dependencies]
+a = "0.0.1"
+ac = "0.1.0"
+actix-web = "4.0.0-beta.5"
 aes = "0.6.0"
 base64 = "0.10.1"
 hex = "0.3.2"
+hyper = "0.14.5"
 lazy_static = "1.4.0"
 rand = "0.8.3"
+reqwest = "0.11.2"
 tokio = { version = "1.4.0", features = ["full"] }
+warp = "0.3.1"

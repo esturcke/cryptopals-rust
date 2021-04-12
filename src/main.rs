@@ -1,4 +1,7 @@
+use bytes::random_64;
+use tokio::sync::oneshot;
 use tokio::task;
+use warp::Filter;
 
 #[macro_use]
 extern crate lazy_static;
@@ -43,8 +46,7 @@ mod rand;
 
 use std::fs;
 
-#[tokio::main]
-pub async fn main() {
+async fn solve(tx: oneshot::Sender<()>) {
   let _ = tokio::join!(
     task::spawn(challenge1::solve()),
     task::spawn(challenge2::solve()),
@@ -78,10 +80,27 @@ pub async fn main() {
     task::spawn(challenge30::solve()),
     task::spawn(challenge31::solve())
   );
+
+  //let _ = tx.send(());
+}
+
+#[actix_web::main]
+pub async fn main() {
+  let (tx, rx) = oneshot::channel();
+
+  let routes =
+    warp::path!("31" / String / String).map(|file, signature| format!("Hello, {}!", file));
+  let (_, server) =
+    warp::serve(routes).bind_with_graceful_shutdown(([127, 0, 0, 1], 9000), async {
+      rx.await.ok();
+    });
+
+  let _ = tokio::join!(task::spawn(server), solve(tx));
 }
 
 lazy_static! {
   static ref VANILLA: String = fs::read_to_string("data/play-that-funky-music.txt").unwrap();
   static ref ICE_ICE_BABY: String = fs::read_to_string("data/ice-ice-baby.txt").unwrap();
   static ref FURY: String = fs::read_to_string("data/fury.txt").unwrap();
+  static ref HMAC_KEY: [u8; 64] = random_64();
 }
