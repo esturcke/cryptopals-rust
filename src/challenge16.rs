@@ -41,13 +41,13 @@ use crate::crypt::*;
 /// ## Stop and think for a second.
 ///
 /// Before you implement this attack, answer this question: why does CBC mode have this property?
-pub fn solve() -> String {
+pub async fn solve() {
   let mut ct = encrypt(&[0u8; 32]);
   let block = xor(&ct[32..48], "<--->;admin=true".as_bytes());
   for (i, byte) in block.iter().enumerate() {
     ct[32 + i] = *byte;
   }
-  get_admin(&ct)
+  assert_eq!(get_admin(&ct), "true");
 }
 
 lazy_static! {

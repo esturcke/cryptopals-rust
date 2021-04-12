@@ -35,7 +35,7 @@ use std::fs;
 /// 8. For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
 ///
 /// This code is going to turn out to be surprisingly useful later on. Breaking repeating-key XOR ("Vigenere") statistically is obviously an academic exercise, a "Crypto 101" thing. But more people "know how" to break it than can actually break it, and a similar technique breaks something much more important.
-pub fn solve() -> String {
+pub async fn solve(solution: &str) {
   let ct = fs::read_to_string("data/6.txt")
     .expect("Can't load ct")
     .replace("\n", "")
@@ -48,7 +48,7 @@ pub fn solve() -> String {
     key.push(crack::guess_xor_key(&chunk));
   }
 
-  cycled_xor(&ct, &key).as_string()
+  assert_eq!(cycled_xor(&ct, &key).as_string(), solution);
 }
 
 fn guess_key_length(ct: &[u8]) -> usize {

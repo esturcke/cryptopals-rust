@@ -29,7 +29,7 @@ use crate::bytes::*;
 /// If you are writing in a language with exceptions, like Python or Ruby, make your function throw an exception on bad padding.
 ///
 /// Crypto nerds know where we're going with this. Bear with us.
-pub fn solve() -> String {
+pub async fn solve() {
   assert_eq!(
     strip_pkcs7(b"ICE ICE BABY\x04\x04\x04\x04").expect("Expected correct padding"),
     b"ICE ICE BABY"
@@ -39,6 +39,4 @@ pub fn solve() -> String {
     strip_pkcs7(b"ICE ICE BABY\x01\x02\x03\x04").expect_err("Expect error"),
     "Invalid padding"
   );
-
-  String::from("done")
 }

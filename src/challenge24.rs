@@ -20,7 +20,7 @@ use std::time::SystemTime;
 /// Use the same idea to generate a random "password reset token" using MT19937 seeded from the current time.
 ///
 /// Write a function to check if any given password token is actually the product of an MT19937 PRNG seeded with the current time.
-pub fn solve() -> String {
+pub async fn solve() {
   let mut rng = thread_rng();
   let prefix = &random_bytes(rng.gen_range(5..=50));
   let known = &[b'A'; 14] as &[u8];
@@ -52,8 +52,6 @@ pub fn solve() -> String {
   });
 
   assert!(is_mt);
-
-  String::from("yay")
 }
 
 fn now() -> u32 {

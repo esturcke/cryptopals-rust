@@ -41,7 +41,7 @@ use std::fs;
 ///
 /// Congratulations.
 /// This is the first challenge we've given you whose solution will break real crypto. Lots of people know that when you encrypt something in ECB mode, you can see penguins through it. Not so many of them can decrypt the contents of those ciphertexts, and now you can. If our experience is any guideline, this attack will get you code execution in security tests about once a year.
-pub fn solve() -> String {
+pub async fn solve(solution: &str) {
   // 1. Find block size
   let block_size = find_block_size();
 
@@ -82,7 +82,7 @@ pub fn solve() -> String {
   }
 
   secret.retain(|&byte| byte > 0);
-  secret.as_string()
+  assert_eq!(secret.as_string(), solution);
 }
 
 fn find_block_size() -> usize {

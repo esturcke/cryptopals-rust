@@ -14,7 +14,7 @@ use std::fs;
 /// Imagine the "edit" function was exposed to attackers by means of an API call that didn't reveal the key or the original plaintext; the attacker has the ciphertext and controls the offset and "new text".
 ///
 /// Recover the original plaintext.
-pub fn solve() -> String {
+pub async fn solve() {
   // Get the plain text
   let pt = decrypt_ecb(
     b"YELLOW SUBMARINE",
@@ -37,8 +37,6 @@ pub fn solve() -> String {
   let decrypted = xor(&ct, &pad);
 
   assert_eq!(pt, decrypted);
-
-  String::from("yay")
 }
 
 lazy_static! {

@@ -17,7 +17,7 @@ use crate::english;
 ///
 /// How? Devise some method for "scoring" a piece of English plaintext. Character frequency is a good metric. Evaluate each output and choose the one with the best score.
 /// ```
-pub fn solve() -> String {
+pub async fn solve() {
   let ct = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736".from_hex();
 
   // Try every single byte key and look for the PT that looks most like English
@@ -30,5 +30,5 @@ pub fn solve() -> String {
     .max_by(|(_, score1), (_, score2)| score1.partial_cmp(score2).unwrap())
     .unwrap();
 
-  pt.as_string()
+  assert_eq!(pt.as_string(), "Cooking MC's like a pound of bacon");
 }

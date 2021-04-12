@@ -25,7 +25,7 @@ fn decrypt(ct: &Vec<u8>) -> (Vec<u8>, f64) {
 /// Find it.
 ///
 /// (Your code from #3 should help.)
-pub fn solve() -> String {
+pub async fn solve() {
   let file = File::open("data/4.txt").expect("Failed to open file");
   let (pt, _score) = BufReader::new(file)
     .lines()
@@ -33,5 +33,8 @@ pub fn solve() -> String {
     .max_by(|(_, score1), (_, score2)| score1.partial_cmp(score2).unwrap())
     .unwrap();
 
-  str::from_utf8(&pt).unwrap().to_string()
+  assert_eq!(
+    str::from_utf8(&pt).unwrap().to_string(),
+    "Now that the party is jumping\n",
+  );
 }

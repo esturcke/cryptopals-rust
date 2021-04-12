@@ -69,7 +69,7 @@ use crate::english;
 /// ## Don't overthink it.
 ///
 /// Points for automating this, but part of the reason I'm having you do this is that I think this approach is suboptimal.
-pub fn solve() -> String {
+pub async fn solve() {
   let nonce = [0u8; 8];
   let cts: Vec<_> = STRINGS
     .iter()
@@ -93,8 +93,6 @@ pub fn solve() -> String {
       pt.to_lowercase()
     );
   }
-
-  String::from("yay")
 }
 
 fn guess_pad_byte(ct: &[u8]) -> u8 {

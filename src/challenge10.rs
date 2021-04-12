@@ -18,7 +18,7 @@ use std::fs;
 ///
 /// Don't cheat.
 /// Do not use OpenSSL's CBC code to do CBC mode, even to verify your results. What's the point of even doing this stuff if you aren't going to learn from it?
-pub fn solve() -> String {
+pub async fn solve(solution: &str) {
   let key = b"YELLOW SUBMARINE";
   let iv = b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00";
   let ct = fs::read_to_string("data/10.txt")
@@ -26,7 +26,10 @@ pub fn solve() -> String {
     .replace("\n", "")
     .from_base64();
 
-  decrypt_cbc(key, iv, &ct)
-    .expect("Expected correct padding")
-    .as_string()
+  assert_eq!(
+    decrypt_cbc(key, iv, &ct)
+      .expect("Expected correct padding")
+      .as_string(),
+    solution
+  );
 }

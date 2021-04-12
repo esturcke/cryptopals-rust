@@ -18,7 +18,7 @@ use rand::prelude::*;
 /// Once you have "untemper" working, create a new MT19937 generator, tap it for 624 outputs, untemper each of them to recreate the state of the generator, and splice that state into a new instance of the MT19937 generator.
 ///
 /// The new "spliced" generator should predict the values of the original.
-pub fn solve() -> String {
+pub async fn solve() {
   let mut generator = random_from_seed(random());
   let mut mt = [032; 624];
   for i in 0..624 {
@@ -26,5 +26,4 @@ pub fn solve() -> String {
   }
   let mut clone = Rand { index: 624, mt };
   assert_eq!(generator.next(), clone.next());
-  String::from("yay")
 }

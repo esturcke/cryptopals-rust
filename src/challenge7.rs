@@ -21,14 +21,17 @@ use std::fs;
 /// Do this with code.
 ///
 /// You can obviously decrypt this using the OpenSSL command-line tool, but we're having you get ECB working in code for a reason. You'll need it a lot later on, and not just for attacking ECB..
-pub fn solve() -> String {
+pub async fn solve(solution: &str) {
   let key = b"YELLOW SUBMARINE";
   let ct = fs::read_to_string("data/7.txt")
     .expect("Can't load ct")
     .replace("\n", "")
     .from_base64();
 
-  decrypt_ecb(key, &ct)
-    .expect("Expected correct padding")
-    .as_string()
+  assert_eq!(
+    decrypt_ecb(key, &ct)
+      .expect("Expected correct padding")
+      .as_string(),
+    solution
+  );
 }

@@ -23,6 +23,4 @@
 /// ## Why artificial delays?
 ///
 /// Early-exit string compares are probably the most common source of cryptographic timing leaks, but they aren't especially easy to exploit. In fact, many timing leaks (for instance, any in C, C++, Ruby, or Python) probably aren't exploitable over a wide-area network at all. To play with attacking real-world timing leaks, you have to start writing low-level timing code. We're keeping things cryptographic in these challenges.
-pub fn solve() -> String {
-  String::from("yay")
-}
+pub async fn solve() {}

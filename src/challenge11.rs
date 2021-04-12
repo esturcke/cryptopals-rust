@@ -25,15 +25,13 @@ use rand::{thread_rng, Rng};
 /// Now, have the function choose to encrypt under ECB 1/2 the time, and under CBC the other half (just use random IVs each time for CBC). Use rand(2) to decide which to use.
 ///
 /// Detect the block cipher mode the function is using each time. You should end up with a piece of code that, pointed at a block box that might be encrypting ECB or CBC, tells you which one is happening.
-pub fn solve() -> String {
+pub async fn solve() {
   let chosen_pt = &vec![0u8; 48][..];
   for _ in 0..100 {
     let (ct, is_ecb) = encryption_oracle(chosen_pt);
     let like_ecb = ct[16..32] == ct[32..48];
     assert_eq!(is_ecb, like_ecb, "Guess correctly");
   }
-
-  String::from("done")
 }
 
 fn encryption_oracle(chosen_pt: &[u8]) -> (Vec<u8>, bool) {

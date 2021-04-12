@@ -32,7 +32,7 @@ use crate::crypt::*;
 /// ```
 /// P'_1 XOR P'_3
 /// ```
-pub fn solve() -> String {
+pub async fn solve() {
   let ct = encrypt(&[255u8; 16]);
   let ct = [&ct[0..16], &[0u8; 16], &ct[0..16], &ct[48..]].concat();
   let key = match check_ct(&ct) {
@@ -41,8 +41,6 @@ pub fn solve() -> String {
   };
 
   assert_eq!(KEY[..], key);
-
-  String::from("yay")
 }
 
 lazy_static! {

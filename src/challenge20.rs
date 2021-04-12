@@ -16,7 +16,7 @@ use std::io::{BufRead, BufReader};
 /// To exploit this: take your collection of ciphertexts and truncate them to a common length (the length of the smallest ciphertext will work).
 ///
 /// Solve the resulting concatenation of ciphertexts as if for repeating- key XOR, with a key size of the length of the ciphertext you XOR'd.
-pub fn solve() -> String {
+pub async fn solve(solution: &str) {
   let file = File::open("data/20.txt").expect("Failed to open file");
   let cts: Vec<_> = BufReader::new(file)
     .lines()
@@ -44,7 +44,7 @@ pub fn solve() -> String {
     })
     .collect();
 
-  pts.join("\n")
+  assert_eq!(pts.join("\n"), solution);
 }
 
 fn guess_pad_byte(ct: &[u8]) -> u8 {

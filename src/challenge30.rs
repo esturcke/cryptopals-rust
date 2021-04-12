@@ -12,7 +12,7 @@ use std::io::{BufRead, BufReader};
 /// ##You're thinking, why did we bother with this?
 ///
 /// Blame Stripe. In their second CTF game, the second-to-last challenge involved breaking an H(k, m) MAC with SHA1. Which meant that SHA1 code was floating all over the Internet. MD4 code, not so much.
-pub fn solve() -> String {
+pub async fn solve() {
   let (message, mac) = get_message_and_mac();
   let suffix = b";admin=true";
   let (forged_message, forged_mac) = (1..)
@@ -41,8 +41,6 @@ pub fn solve() -> String {
     .expect("to be able to forge");
 
   assert!(check_mac(&forged_message, &forged_mac));
-
-  String::from("yay")
 }
 
 const MESSAGE: &'static [u8] =

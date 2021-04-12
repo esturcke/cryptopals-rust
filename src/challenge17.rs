@@ -50,13 +50,12 @@ use rand::seq::SliceRandom;
 /// So you can assume that if you corrupt a decryption AND it had valid padding, you know what that padding byte is.
 ///
 /// It is easy to get tripped up on the fact that CBC plaintexts are "padded". Padding oracles have nothing to do with the actual padding on a CBC plaintext. It's an attack that targets a specific bit of code that handles decryption. You can mount a padding oracle on any CBC block, whether it's padded or not.
-pub fn solve() -> String {
+pub async fn solve() {
   let (pt, iv, ct) = random_encrypted_string();
   let found_pt = decrypt(iv, ct);
 
   // I have a bug somewhere and can't get the first byte, so skip it for now.
   assert_eq!(found_pt[1..], pt[1..]);
-  String::from("yay")
 }
 
 fn decrypt(iv: Vec<u8>, ct: Vec<u8>) -> Vec<u8> {

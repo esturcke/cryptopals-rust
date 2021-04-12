@@ -54,9 +54,12 @@ use crate::crypt::*;
 /// ## This is the only block cipher mode that matters in good code.
 ///
 /// Most modern cryptography relies on CTR mode to adapt block ciphers into stream ciphers, because most of what we want to encrypt is better described as a stream than as a sequence of blocks. Daniel Bernstein once quipped to Phil Rogaway that good cryptosystems don't need the "decrypt" transforms. Constructions like CTR are what he was talking about.
-pub fn solve() -> String {
+pub async fn solve() {
   let key = b"YELLOW SUBMARINE".to_vec();
   let nonce = [0u8; 8];
   let ct = "L77na/nrFsKvynd6HzOoG7GHTLXsTVu9qvY/2syLXzhPweyyMTJULu/6/kXX0KSvoOLSFQ==".from_base64();
-  decrypt_ctr(&key, &nonce, &ct).as_string()
+  assert_eq!(
+    decrypt_ctr(&key, &nonce, &ct).as_string(),
+    "Yo, VIP Let's kick it Ice, Ice, baby Ice, Ice, baby "
+  );
 }

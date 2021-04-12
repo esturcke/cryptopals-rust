@@ -42,7 +42,7 @@ use std::io::{BufRead, BufReader};
 /// ## This is a very useful attack.
 ///
 /// For instance: Thai Duong and Juliano Rizzo, who got to this attack before we did, used it to break the Flickr API.
-pub fn solve() -> String {
+pub async fn solve() {
   let (message, mac) = get_message_and_mac();
   let suffix = b";admin=true";
   let (forged_message, forged_mac) = (1..)
@@ -71,8 +71,6 @@ pub fn solve() -> String {
     .expect("to be able to forge");
 
   assert!(check_mac(&forged_message, &forged_mac));
-
-  String::from("yay")
 }
 
 const MESSAGE: &'static [u8] =

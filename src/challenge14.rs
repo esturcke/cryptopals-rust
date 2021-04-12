@@ -20,7 +20,7 @@ use std::fs;
 /// What's harder than challenge #12 about doing this? How would you overcome that obstacle? The hint is: you're using all the tools you already have; no crazy math is required.
 ///
 /// Think "STIMULUS" and "RESPONSE".
-pub fn solve() -> String {
+pub async fn solve(solution: &str) {
   // 1. Find block size
   let block_size = find_block_size();
 
@@ -66,7 +66,7 @@ pub fn solve() -> String {
   }
 
   secret.retain(|&byte| byte > 0);
-  secret.as_string()
+  assert_eq!(secret.as_string(), solution);
 }
 
 fn find_block_size() -> usize {

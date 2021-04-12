@@ -17,7 +17,7 @@ use std::time::SystemTime;
 /// You get the idea. Go get coffee while it runs. Or just simulate the passage of time, although you're missing some of the fun of this exercise if you do that.
 ///
 /// From the 32 bit RNG output, discover the seed.
-pub fn solve() -> String {
+pub async fn solve() {
   // Get the random number with a time-based seed
   let (value, t, seed) = random();
 
@@ -31,7 +31,6 @@ pub fn solve() -> String {
   }
 
   assert_eq!(seed, guess);
-  String::from("yay")
 }
 
 fn random() -> (u32, u32, u32) {

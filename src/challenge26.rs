@@ -8,14 +8,13 @@ use crate::crypt::*;
 /// There are people in the world that believe that CTR resists bit flipping attacks of the kind to which CBC mode is susceptible.
 ///
 /// Re-implement the CBC bitflipping exercise from earlier to use CTR mode instead of CBC mode. Inject an "admin=true" token.
-pub fn solve() -> String {
+pub async fn solve() {
   let mut ct = encrypt(&[255u8; 11]);
   let block = xor(&not(&ct[32..43]), ";admin=true".as_bytes());
   for (i, byte) in block.iter().enumerate() {
     ct[32 + i] = *byte;
   }
   assert_eq!(get_admin(&ct), "true");
-  String::from("yay")
 }
 
 lazy_static! {

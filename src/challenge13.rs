@@ -54,7 +54,7 @@ use std::collections::HashMap;
 ///   B. Decrypt the encoded user profile and parse it.
 ///
 ///Using only the user input to profile_for() (as an oracle to generate "valid" ciphertexts) and the ciphertexts themselves, make a role=admin profile.
-pub fn solve() -> String {
+pub async fn solve() {
   // Get the ct for a user profile, with "user" in a block by itself
   let ct_user = encrypted_profile("a@example.com");
 
@@ -65,8 +65,11 @@ pub fn solve() -> String {
   // Chop off the user role and add admin role
   let ct = [&ct_user[..ct_user.len() - 16], &ct_role[16..32]].concat();
 
-  // Return role
-  String::from(parse(&decrypt(&ct).as_string()).get("role").unwrap())
+  // Check role
+  assert_eq!(
+    String::from(parse(&decrypt(&ct).as_string()).get("role").unwrap()),
+    "admin"
+  );
 }
 
 fn parse(query: &str) -> HashMap<String, String> {
