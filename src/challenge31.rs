@@ -1,4 +1,9 @@
+use crate::bytes::random_64;
+use crate::bytes::*;
+use crate::crypt::hmac_sha1;
 use reqwest;
+use std::time::SystemTime;
+use tokio::time::{sleep, Duration};
 
 /// # Implement and break HMAC-SHA1 with an artificial timing leak
 ///
@@ -26,22 +31,81 @@ use reqwest;
 ///
 /// Early-exit string compares are probably the most common source of cryptographic timing leaks, but they aren't especially easy to exploit. In fact, many timing leaks (for instance, any in C, C++, Ruby, or Python) probably aren't exploitable over a wide-area network at all. To play with attacking real-world timing leaks, you have to start writing low-level timing code. We're keeping things cryptographic in these challenges.
 pub async fn solve() {
-  let body = reqwest::get("http://localhost:9000/31/hello/there")
-    .await
-    .unwrap()
-    .text()
-    .await
-    .unwrap();
+  let file = "hello!";
+  // This is very slow so don't run it
+  // let hmac = find_hmac(&file).await;
+  // assert_eq!(hmac, hmac_sha1(&KEY, file.as_bytes()));
+}
 
-  println!("body = {:?}", body);
+async fn find_hmac(file: &str) -> [u8; 20] {
+  let mut hmac = [0u8; 20];
+  for i in 0..20 {
+    let mut max: Option<(u8, u128)> = None;
+    for c in 0u8..=255 {
+      hmac[i] = c;
+      match time(file, &hmac.to_hex()).await {
+        Check::Done => {
+          return hmac;
+        }
+        Check::Time(t) => {
+          match max {
+            None => {
+              max = Some((c, t));
+            }
+            Some((_, max_t)) => {
+              if max_t < t {
+                max = Some((c, t));
+              }
+            }
+          };
+        }
+      }
+    }
+    hmac[i] = max.unwrap().0;
+  }
+  hmac
+}
 
-  // // Parse an `http::Uri`...
-  // let uri = "http://127.0.0.1:9000/hello/there".parse().unwrap();
+enum Check {
+  Done,
+  Time(u128),
+}
 
-  //let client = Client::new();
+async fn time(file: &str, hmac: &str) -> Check {
+  let start = SystemTime::now();
+  let status = reqwest::get(format!(
+    "http://localhost:9000/31-hmac/{}/{}",
+    file,
+    hmac
+  ))
+  .await
+  .unwrap()
+  .status()
+  .as_u16();
+  match status {
+    200 => Check::Done,
+    500 => Check::Time(SystemTime::now().duration_since(start).unwrap().as_micros()),
+    _ => panic!("Unexpected status code {}", status),
+  }
+}
 
-  // // Await the response...
-  // //  let resp = client.get(uri).await;
+pub async fn check(file: String, hmac: String) -> bool {
+  slow_equals(&hmac_sha1(&KEY, file.as_bytes()), &hmac.from_hex()).await
+}
 
-  // //  println!("Response: {:?}", resp);
+async fn slow_equals(a: &[u8], b: &[u8]) -> bool {
+  if a.len() != b.len() {
+    return false;
+  }
+  for i in 0..a.len() {
+    sleep(Duration::from_millis(50)).await;
+    if a[i] != b[i] {
+      return false;
+    }
+  }
+  true
+}
+
+lazy_static! {
+  static ref KEY: [u8; 64] = random_64();
 }

@@ -1,7 +1,5 @@
-use bytes::random_64;
-use tokio::sync::oneshot;
+use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
 use tokio::task;
-use warp::Filter;
 
 #[macro_use]
 extern crate lazy_static;
@@ -46,7 +44,7 @@ mod rand;
 
 use std::fs;
 
-async fn solve(tx: oneshot::Sender<()>) {
+async fn solve(server: actix_web::dev::Server) {
   let _ = tokio::join!(
     task::spawn(challenge1::solve()),
     task::spawn(challenge2::solve()),
@@ -81,26 +79,31 @@ async fn solve(tx: oneshot::Sender<()>) {
     task::spawn(challenge31::solve())
   );
 
-  //let _ = tx.send(());
+  server.stop(false).await
 }
 
 #[actix_web::main]
 pub async fn main() {
-  let (tx, rx) = oneshot::channel();
+  #[get("/31-hmac/{file}/{signature}")]
+  async fn hmac(path: web::Path<(String, String)>) -> impl Responder {
+    let (file, signature) = path.into_inner();
+    if challenge31::check(file, signature).await {
+      HttpResponse::Ok()
+    } else {
+      HttpResponse::InternalServerError()
+    }
+  }
 
-  let routes =
-    warp::path!("31" / String / String).map(|file, signature| format!("Hello, {}!", file));
-  let (_, server) =
-    warp::serve(routes).bind_with_graceful_shutdown(([127, 0, 0, 1], 9000), async {
-      rx.await.ok();
-    });
+  let server = HttpServer::new(|| App::new().service(hmac))
+    .bind("127.0.0.1:9000")
+    .unwrap()
+    .run();
 
-  let _ = tokio::join!(task::spawn(server), solve(tx));
+  let _ = tokio::join!(task::spawn(server.clone()), solve(server));
 }
 
 lazy_static! {
   static ref VANILLA: String = fs::read_to_string("data/play-that-funky-music.txt").unwrap();
   static ref ICE_ICE_BABY: String = fs::read_to_string("data/ice-ice-baby.txt").unwrap();
   static ref FURY: String = fs::read_to_string("data/fury.txt").unwrap();
-  static ref HMAC_KEY: [u8; 64] = random_64();
 }
