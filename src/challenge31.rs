@@ -31,12 +31,13 @@ use tokio::time::{sleep, Duration};
 ///
 /// Early-exit string compares are probably the most common source of cryptographic timing leaks, but they aren't especially easy to exploit. In fact, many timing leaks (for instance, any in C, C++, Ruby, or Python) probably aren't exploitable over a wide-area network at all. To play with attacking real-world timing leaks, you have to start writing low-level timing code. We're keeping things cryptographic in these challenges.
 pub async fn solve() {
-  let file = "hello!";
+  let _file = "hello!";
   // This is very slow so don't run it
   // let hmac = find_hmac(&file).await;
   // assert_eq!(hmac, hmac_sha1(&KEY, file.as_bytes()));
 }
 
+#[allow(dead_code)]
 async fn find_hmac(file: &str) -> [u8; 20] {
   let mut hmac = [0u8; 20];
   for i in 0..20 {
@@ -73,15 +74,11 @@ enum Check {
 
 async fn time(file: &str, hmac: &str) -> Check {
   let start = SystemTime::now();
-  let status = reqwest::get(format!(
-    "http://localhost:9000/31-hmac/{}/{}",
-    file,
-    hmac
-  ))
-  .await
-  .unwrap()
-  .status()
-  .as_u16();
+  let status = reqwest::get(format!("http://localhost:9000/31-hmac/{}/{}", file, hmac))
+    .await
+    .unwrap()
+    .status()
+    .as_u16();
   match status {
     200 => Check::Done,
     500 => Check::Time(SystemTime::now().duration_since(start).unwrap().as_micros()),

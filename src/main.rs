@@ -30,6 +30,7 @@ mod challenge29;
 mod challenge3;
 mod challenge30;
 mod challenge31;
+mod challenge32;
 mod challenge4;
 mod challenge5;
 mod challenge6;
@@ -76,7 +77,8 @@ async fn solve(server: actix_web::dev::Server) {
     task::spawn(challenge28::solve()),
     task::spawn(challenge29::solve()),
     task::spawn(challenge30::solve()),
-    task::spawn(challenge31::solve())
+    task::spawn(challenge31::solve()),
+    task::spawn(challenge32::solve())
   );
 
   server.stop(false).await
@@ -94,7 +96,17 @@ pub async fn main() {
     }
   }
 
-  let server = HttpServer::new(|| App::new().service(hmac))
+  #[get("/32-hmac/{file}/{signature}")]
+  async fn hmac2(path: web::Path<(String, String)>) -> impl Responder {
+    let (file, signature) = path.into_inner();
+    if challenge32::check(file, signature).await {
+      HttpResponse::Ok()
+    } else {
+      HttpResponse::InternalServerError()
+    }
+  }
+
+  let server = HttpServer::new(|| App::new().service(hmac).service(hmac2))
     .bind("127.0.0.1:9000")
     .unwrap()
     .run();
