@@ -52,7 +52,8 @@ pub async fn solve() {
     &[a_pub.to_bytes_be(), b_pub.to_bytes_be()].concat(),
   ));
   let x = BigUint::from_bytes_be(&sha256(&[&salt, P.as_bytes()].concat()));
-  let s = (K.clone() * &*N + &b_pub - &(K.clone() * &G.modpow(&x, &N))).modpow(&(a + &(u.clone() * &x)), &N);
+  let s = (K.clone() * &*N + &b_pub - &(K.clone() * &G.modpow(&x, &N)))
+    .modpow(&(a + &(u.clone() * &x)), &N);
   let key = sha256(&s.to_bytes_be());
   let hmac = hmac_sha256(&key, &salt);
   assert!(server.check(&hmac));
