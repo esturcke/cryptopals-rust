@@ -3,6 +3,7 @@ use crate::rand::*;
 use aes::cipher::generic_array::GenericArray;
 use aes::cipher::{BlockCipher, NewBlockCipher};
 use aes::Aes128;
+use sha2::{Digest, Sha256};
 
 pub fn aes128(key: &[u8]) -> Aes128 {
   assert_eq!(key.len(), 16, "AES key length must be 16");
@@ -204,6 +205,19 @@ pub fn sha1_mac(key: &[u8], message: &[u8]) -> [u8; SHA1_LENGTH] {
   sha1(&[key, message].concat())
 }
 
+pub const SHA256_LENGTH: usize = 32;
+
+pub fn sha256(message: &[u8]) -> [u8; SHA256_LENGTH] {
+  let mut digest = [0u8; SHA256_LENGTH];
+  let mut hasher = Sha256::new();
+  hasher.update(message);
+  let result = hasher.finalize();
+  for i in 0..SHA256_LENGTH {
+    digest[i] = result[i];
+  }
+  digest
+}
+
 const MD5_LENGTH: usize = 16;
 
 pub fn md5(message: &[u8]) -> [u8; MD5_LENGTH] {
@@ -302,6 +316,13 @@ pub fn hmac_sha1(key: &[u8; 64], message: &[u8]) -> [u8; SHA1_LENGTH] {
   // sha1([&o_key_pad, &sha1(&[&i_key_pad, message].concat())].concat())
   let inner = sha1(&[&i_key_pad, message].concat()).to_vec();
   sha1(&[o_key_pad, inner].concat())
+}
+
+pub fn hmac_sha256(key: &[u8; SHA256_LENGTH], message: &[u8]) -> [u8; SHA256_LENGTH] {
+  let o_key_pad = xor(key, &[0x5c; SHA256_LENGTH]);
+  let i_key_pad = xor(key, &[0x36; SHA256_LENGTH]);
+  let inner = sha256(&[&i_key_pad, message].concat()).to_vec();
+  sha256(&[o_key_pad, inner].concat())
 }
 
 #[cfg(test)]
