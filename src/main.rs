@@ -36,6 +36,7 @@ mod challenge34;
 mod challenge35;
 mod challenge36;
 mod challenge37;
+mod challenge38;
 mod challenge4;
 mod challenge5;
 mod challenge6;
@@ -88,7 +89,8 @@ async fn solve(server: actix_web::dev::Server) {
     task::spawn(challenge34::solve()),
     task::spawn(challenge35::solve()),
     task::spawn(challenge36::solve()),
-    task::spawn(challenge37::solve())
+    task::spawn(challenge37::solve()),
+    task::spawn(challenge38::solve())
   );
 
   server.stop(false).await

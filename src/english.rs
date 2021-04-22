@@ -1,3 +1,6 @@
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+
 fn english_counts(byte: u8) -> i64 {
   // Taken from https://link.springer.com/content/pdf/10.3758%2FBF03195586.pdf
   match byte {
@@ -117,4 +120,19 @@ pub fn score(bytes: &Vec<u8>) -> f64 {
 
   // Score
   1.0 - distance
+}
+
+pub fn words() -> &'static Vec<String> {
+  &*WORDS
+}
+
+lazy_static! {
+  static ref WORDS: Vec<String> = {
+    let file = File::open("/usr/share/dict/words").expect("Failed to open dict");
+    let words: Vec<_> = BufReader::new(file)
+      .lines()
+      .map(|l| l.unwrap().clone())
+      .collect();
+    words
+  };
 }
