@@ -61,6 +61,7 @@ use rand::thread_rng;
 /// Now, run the protocol as a MITM attacker: pose as the server and use arbitrary values for b, B, u, and salt.
 ///
 /// Crack the password from A's HMAC-SHA256(K, salt).
+#[allow(dead_code)]
 pub async fn solve() {
   // Login with the password
   assert!(login(I, &P));
